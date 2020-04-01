@@ -1,0 +1,23 @@
+'use strict'
+
+const User = use('App/Models/User');
+
+class AuthController {
+    async register({ request, response }) {
+        const data = request.only(['email', 'name', 'password']);
+
+        const user = await User.create(data);
+
+        return response.status(201).json(user);
+    }
+
+    async authenticate({ auth, request, response }) {
+        const { email, password } = request.all();
+        
+        const token = await auth.attempt(email, password);
+
+        return response.json(token);
+    }
+}
+
+module.exports = AuthController
