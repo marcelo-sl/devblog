@@ -11,12 +11,12 @@ class AuthController {
         return response.status(201).json(user);
     }
 
-    async authenticate({ auth, request, response }) {
+    async authenticate({ auth, request }) {
         const { email, password } = request.all();
         
         const token = await auth.attempt(email, password);
 
-        return response.json(token);
+        return token;
     }
 }
 

@@ -4,7 +4,6 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const Database = use('Database');
 const Post = use('App/Models/Post');
 
 class PostController {
@@ -17,17 +16,20 @@ class PostController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ response }) {
-    const posts = await Database.table('posts')
-      .innerJoin('users', 'users.id', 'posts.user_id')
-      .select([
-        'posts.*',
-        'users.name as authorName',
-        'users.github as authorGithub',
-        'users.linkedin as authorLinkedin',
-      ]);
+  async index () {
+      const posts = await Post
+        .query()
+        .with('user', user => {
+          user.select(
+            'id',
+            'name as authorName',
+            'github as authorGithub',
+            'linkedin as authorLinkedin',
+          )
+        })
+        .fetch()
 
-    return response.json(posts);
+    return posts;
   }
 
   /**
@@ -61,20 +63,29 @@ class PostController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
+  
   async show ({ params, response }) {
-    const [post] = await Database.table('posts')
-      .innerJoin('users', 'users.id', 'posts.user_id')
-      .select([
-        'posts.*',
-        'users.name as authorName',
-        'users.github as authorGithub',
-        'users.linkedin as authorLinkedin',
-      ]).where('posts.id', params.id);
+    const post = await Post
+      .query()
+      .with('user', user => {
+        user.select(
+          'id',
+          'name as authorName',
+          'github as authorGithub',
+          'linkedin as authorLinkedin',
+        )
+      })
+      .with('comments', comment => {
+        comment.where('comments.post_id', params.id)
+      })
+      .where('id', params.id)
+      .firstOrFail()
 
-    if(!post) return response.status(404).json({ error: 'Post Not Found!' });
+    if(post.length == 0) return response.status(404).json({ error: 'Post Not Found!' });
 
-    return response.json(post);
+    return post;
   }
+  
 
   /**
    * Update post details.
@@ -84,17 +95,16 @@ class PostController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
-    const { title, body } = request.all();
+  async update ({ params, request }) {
+    const data = request.only(['title', 'body']);
 
     const post = await Post.findOrFail(params.id);
 
-    post.title = title;
-    post.body = body;
+    post.merge(data);
 
     await post.save();
 
-    return response.json(post);
+    return post;
   }
 
   /**

@@ -3,33 +3,30 @@
 const User = use('App/Models/User');
 
 class ProfileController {
-    async show({ auth, params, response }) {
+    async show({ auth, params }) {
         if(auth.user.id !== Number(params.id)) {
             return response.status(403).json({ error: 'This is not your profile!' });
         } 
 
         const user = await User.find(auth.user.id);
 
-        return response.json(user);
+        return user;
     }
 
-    async update({ auth, params, request, response }) {
+    async update({ auth, params, request }) {
         if(auth.user.id !== Number(params.id)) {
             return response.status(403).json({ error: 'This is not your profile' });
         }
         
-        const { name, bio, github, linkedin } = await request.all();
+        const data = await request.only(['name', 'bio', 'github', 'linkedin']);
 
         const user = await User.find(auth.user.id);
 
-        user.name = name;
-        user.bio = bio;
-        user.github = github;
-        user.linkedin = linkedin;
+        user.merge(data);
 
         await user.save();
 
-        return response.json(user);
+        return user;
     }
 }
 
