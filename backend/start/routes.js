@@ -32,6 +32,11 @@ Route.group(() => {
   // User Profile Routes
   Route.get('/profile/:id', 'ProfileController.show')
   Route.put('/profile/:id', 'ProfileController.update')
+
+  // Comments Routes
+  Route.post('/posts/:postId/comment/new', 'CommentController.store')
+  Route.put('/comments/:id', 'CommentController.update')
+  Route.delete('/comments/:id', 'CommentController.destroy')
 }).middleware(['auth']);
 
 // Administrator Routes

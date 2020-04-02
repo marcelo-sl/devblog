@@ -9,7 +9,12 @@ class PostSchema extends Schema {
       table.increments()
       table.string('title', 50).notNullable()
       table.string('body').notNullable()
-      table.integer('user_id').unsigned().references('id').inTable('users')
+      table
+        .integer('user_id')
+        .unsigned()
+        .references('id').inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
       table.timestamps()
     })
   }
