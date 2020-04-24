@@ -3,6 +3,8 @@
 /** @type {import('@adonisjs/framework/src/Server')} */
 const Server = use('Server')
 
+Server.use(['Adonis/Middleware/Cors'])
+
 /*
 |--------------------------------------------------------------------------
 | Global Middleware
