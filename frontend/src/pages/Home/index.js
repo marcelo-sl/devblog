@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import { Link } from 'react-router-dom';
 import { FaClock, FaBook } from 'react-icons/fa';
 import moment from 'moment';
+import 'moment/locale/pt-br';
 
 import api from '../../services/api';
 

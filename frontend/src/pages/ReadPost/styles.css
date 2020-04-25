@@ -25,9 +25,18 @@
     border-radius: 8px;
 }
 
-.post-container h1 {
-    color: #3169c1;
+.post-container .post .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
+    color: #3169c1;
+
+}
+
+.post-container .post .post-header .post-date {
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .post-container .post p {

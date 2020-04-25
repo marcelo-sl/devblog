@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 
 import { Link, useParams } from 'react-router-dom';
-import { FaArrowLeft, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaArrowLeft, FaGithub } from 'react-icons/fa';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
 import api from '../../services/api';
 
@@ -34,7 +36,10 @@ export default function ReadPost() {
 
                 <div className="post-container">
                     <div className="post">
-                        <h1>{post.title}</h1>
+                        <div className="post-header">
+                            <h1>{post.title}</h1>
+                            <span className="post-date">{ moment(post.updated_at).format("LL") }</span>
+                        </div>
                         <p>{post.body}</p>
                     </div>
                     <div className="author-container">
