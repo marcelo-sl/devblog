@@ -15,7 +15,7 @@ export default function Header() {
             </Link>
             
             <div className="links">
-                <Link to="/session">
+                <Link to="/login">
                     Entrar<FaSignInAlt size={18} color="#FFF" className="sign-icon"/>
                 </Link>
             </div>
