@@ -25,6 +25,18 @@
     outline: 1px solid rgba(0, 0, 0, 0.5);
 }
 
+.login-form .form-group .error-msg {
+    width: 100%;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #000;
+    background-color: #F77;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    text-transform: capitalize;
+}
+
 .login-form .register-link {
     margin: 15px 0;
     font-size: 1.2rem;
